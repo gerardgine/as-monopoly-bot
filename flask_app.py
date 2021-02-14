@@ -1,6 +1,6 @@
 import logging
-import telegram
-from flask import Flask, jsonify, request
+# import telegram
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def get_token():
 
 @app.route("/", methods=["POST", "GET"])
 def hello_world():
-    bot = telegram.Bot(token=get_token())
+    # bot = telegram.Bot(token=get_token())
     if request.method == "GET":
         logging.log(logging.INFO, "GET /")
         logging.log(logging.INFO, request)
