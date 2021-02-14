@@ -1,16 +1,31 @@
-# A very simple Flask Hello World app for you to get started with...
-
-from flask import Flask, request
+import logging
+import telegram
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 
-@app.route("/", methods=['POST', 'GET'])
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+
+
+def get_token():
+    with open("auth_token", "r") as fd:
+        return fd.read()
+
+
+@app.route("/", methods=["POST", "GET"])
 def hello_world():
-    if request.method == 'GET':
-        return "Hello from Flask (GET method)!"
+    bot = telegram.Bot(token=get_token())
+    if request.method == "GET":
+        logging.log(logging.INFO, "GET /")
+        logging.log(logging.INFO, request)
+        return "GET /"
     else:
-        return "Hello from Flask (POST method)!"
+        logging.log(logging.INFO, "POST /")
+        logging.log(logging.INFO, request)
+        return "POST /"
 
 
 @app.route("/start")
