@@ -11,6 +11,13 @@ def get_token():
         return fd.read().strip()
 
 
+def authorize():
+    try:
+        return telegram.Bot(token=get_token())
+    except telegram.error.InvalidToken:
+        abort(401, "Invalid Telegram token")
+
+
 def command_handler(data):
     """
     Sample request data:
@@ -42,11 +49,7 @@ def command_handler(data):
 
     """
 
-    try:
-        # bot = telegram.Bot(token=get_token())
-        bot = telegram.Bot(token="gfhdjskgfhjsdkgjhkd")
-    except Exception as e:
-        return str(type(e))
+    bot = authorize()
 
     command = data["message"]["text"].split()[0]
     if command == "/start":
