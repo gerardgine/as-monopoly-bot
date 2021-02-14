@@ -8,7 +8,7 @@ SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 def get_token():
     with open(os.path.join(SCRIPT_DIR, "auth_token"), "r") as fd:
-        return fd.read()
+        return fd.read().strip()
 
 
 def command_handler(data):
