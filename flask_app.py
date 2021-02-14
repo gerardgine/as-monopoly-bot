@@ -1,13 +1,12 @@
-import logging
 # import telegram
-from flask import Flask, request
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
+# logging.basicConfig(
+#     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+# )
 
 
 def get_token():
@@ -19,12 +18,30 @@ def get_token():
 def hello_world():
     # bot = telegram.Bot(token=get_token())
     if request.method == "GET":
-        logging.log(logging.INFO, "GET /")
-        logging.log(logging.INFO, request)
+        app.logger.info("GET /")
+        app.logger.info("request.args")
+        app.logger.info(request.args)
+        app.logger.info("request.form")
+        app.logger.info(request.form)
+        app.logger.info("request.values")
+        app.logger.info(request.values)
+        app.logger.info("request.json")
+        app.logger.info(request.json)
+        app.logger.info("request.data")
+        app.logger.info(request.data)
         return "GET /"
     else:
-        logging.log(logging.INFO, "POST /")
-        logging.log(logging.INFO, request)
+        app.logger.info("POST /")
+        app.logger.info("request.args")
+        app.logger.info(request.args)
+        app.logger.info("request.form")
+        app.logger.info(request.form)
+        app.logger.info("request.values")
+        app.logger.info(request.values)
+        app.logger.info("request.json")
+        app.logger.info(request.json)
+        app.logger.info("request.data")
+        app.logger.info(request.data)
         return "POST /"
 
 
