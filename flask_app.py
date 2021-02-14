@@ -1,6 +1,8 @@
 import logging
-# import telegram
-from flask import Flask, jsonify, request
+
+from flask import abort, Flask, request
+
+from commands import command_handler
 
 app = Flask(__name__)
 
@@ -10,52 +12,61 @@ logging.basicConfig(
 )
 
 
-def get_token():
-    with open("auth_token", "r") as fd:
-        return fd.read()
-
-
-@app.route("/", methods=["POST", "GET"])
+@app.route("/", methods=["POST"])
 def hello_world():
-    # bot = telegram.Bot(token=get_token())
-    if request.method == "GET":
-        app.logger.info("GET /")
-        app.logger.info("request.args")
-        app.logger.info(request.args)
-        app.logger.info("request.form")
-        app.logger.info(request.form)
-        app.logger.info("request.values")
-        app.logger.info(request.values)
-        app.logger.info("request.json")
-        app.logger.info(request.json)
-        app.logger.info("request.data")
-        app.logger.info(request.data)
-        return "GET /"
+    """
+    Sample request data:
+
+    {
+        "update_id": 123456789,
+        "message": {
+            "message_id": 16,
+            "from": {
+                "id": 456789,
+                "is_bot": false,
+                "first_name": "John",
+                "last_name": "Appleseed",
+                "username": "johnapleseed",
+                "language_code": "en"
+            },
+            "chat": {
+                "id": 456789,
+                "first_name": "John",
+                "last_name": "Appleseed",
+                "username": "johnapleseed",
+                "type": "private"
+            },
+            "date": 1613296854,
+            "text": "/start",
+            "entities": [{"offset": 0, "length": 6, "type": "bot_command"}]
+        }
+    }
+
+    """
+
+    app.logger.info("POST /")
+    app.logger.info("request.args")
+    app.logger.info(request.args)
+    app.logger.info("request.form")
+    app.logger.info(request.form)
+    app.logger.info("request.values")
+    app.logger.info(request.values)
+    app.logger.info("request.json")
+    app.logger.info(request.json)
+    app.logger.info("request.data")
+    app.logger.info(request.data)
+
+    if not request.json:
+        abort(400)
+
+    if get_message_type(request.json) == "bot_command":
+        return command_handler(request.json)
     else:
-        app.logger.info("POST /")
-        app.logger.info("request.args")
-        app.logger.info(request.args)
-        app.logger.info("request.form")
-        app.logger.info(request.form)
-        app.logger.info("request.values")
-        app.logger.info(request.values)
-        app.logger.info("request.json")
-        app.logger.info(request.json)
-        app.logger.info("request.data")
-        app.logger.info(request.data)
-        return "POST /"
+        abort(400)
 
 
-@app.route("/start")
-def start_cmd():
-    return "Start"
-
-
-@app.route("/help")
-def help_cmd():
-    return "Help"
-
-
-@app.route("/settings")
-def settings_cmd():
-    return "Settings"
+def get_message_type(data):
+    try:
+        return data["message"]["entities"][0]["type"]
+    except KeyError:
+        abort(400)
