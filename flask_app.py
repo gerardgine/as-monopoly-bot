@@ -13,7 +13,7 @@ logging.basicConfig(
 
 
 @app.route("/", methods=["POST"])
-def hello_world():
+def root_url():
     """
     Sample request data:
 
