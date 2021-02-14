@@ -1,12 +1,13 @@
+import logging
 # import telegram
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 
-# logging.basicConfig(
-#     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-# )
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
 
 
 def get_token():
