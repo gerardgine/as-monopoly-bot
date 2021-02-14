@@ -45,8 +45,7 @@ def command_handler(data):
     try:
         bot = telegram.Bot(token=get_token())
     except Exception as e:
-        print(e)
-        raise e
+        return str(e)
 
     command = data["message"]["text"].split()[0]
     if command == "/start":
