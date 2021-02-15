@@ -1,3 +1,5 @@
+import random
+
 import telegram
 
 from responses import success
@@ -21,21 +23,53 @@ def help_cmd(update: telegram.Update, bot):
 
 
 def settings_cmd(update: telegram.Update, bot):
-    text = "These are not the androids you were looking for"
+    text = "These are not the droids you're looking for"
     bot.send_message(get_chat_id_from_update(update), text)
     return success(text)
 
 
 def board_poll_cmd(update: telegram.Update, bot):
-    text = "Això hauria de crear una enquesta per triar el taulell"
-    bot.send_message(get_chat_id_from_update(update), text)
+    text = "Board poll"
+    bot.send_poll(
+        get_chat_id_from_update(update),
+        question="Quin taulell voleu fer servir?",
+        options=[
+            "Clàssic",
+            "Monstropolis",
+            "Paris, La Belle Epoque",
+            "1935 Atlantic City",
+            "Snowdrop Valley",
+        ],
+        is_anonymous=False,
+    )
     return success(text)
 
 
-def shitty_offer_poll_cmd(update: telegram.Update, bot):
-    text = (
-        "Això hauria de crear una enquesta per discutir com de merda és una "
-        "oferta. Si és del Luisal, segur que ho és molt."
+def get_shitty_offer_options():
+    borderline_options = ["Borderline", "Meeeh...", "Més o menys", "D'aquella manera"]
+    insulting_options = [
+        "Por supuesto",
+        "Pixada a la cara",
+        "Insult",
+        "Cómeme los huevos",
+        "A fregar!",
+        "Venga hombre!",
+        "A tu puta casa!",
+        "Puto rastrero",
+        "Rata de claveguera",
+        "Luisal-level",
+    ]
+    return ["No", random.choice(borderline_options), "Sí"] + random.sample(
+        insulting_options, 2
     )
-    bot.send_message(get_chat_id_from_update(update), text)
+
+
+def shitty_offer_poll_cmd(update: telegram.Update, bot):
+    text = "Mierdaoferta poll"
+    bot.send_poll(
+        get_chat_id_from_update(update),
+        question="Mierdaoferta?",
+        options=get_shitty_offer_options(),
+        is_anonymous=False,
+    )
     return success(text)
