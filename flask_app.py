@@ -1,10 +1,11 @@
 import logging
 import os
 
-from flask import abort, Flask, request
+from flask import Flask, request
 import telegram
 
 from dispatcher import dispatch
+from responses import error
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -22,7 +23,7 @@ def authorize():
     try:
         return telegram.Bot(token=get_token())
     except telegram.error.InvalidToken:
-        abort(401, "Invalid Telegram token")
+        return error(401, "Invalid Telegram token")
 
 
 app = Flask(__name__)
@@ -33,7 +34,7 @@ bot = authorize()
 def root_url():
     app.logger.info(request.json)
     if not request.json:
-        abort(400)
+        return error(400, "No json data found in request")
 
     update = telegram.Update.de_json(request.json, bot)
     return dispatch(update, bot)

@@ -10,6 +10,7 @@ from command_handlers import (
     board_poll_cmd,
     shitty_offer_poll_cmd,
 )
+from responses import error
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 BOT_NAME = "FuckingMonopolyBot"
@@ -77,6 +78,6 @@ def dispatch(update, bot):
         if stripped_cmd in command_handlers:
             response = command_handlers[stripped_cmd](update, bot)
         else:
-            abort(400, f"Invalid command: {cmd_text} (stripped: {stripped_cmd})")
+            return error(400, f"Invalid command: {cmd_text} (stripped: {stripped_cmd})")
 
     return response
