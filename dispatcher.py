@@ -12,15 +12,25 @@ from command_handlers import (
 )
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
+BOT_NAME = "FuckingMonopolyBot"
 
 
 command_handlers = {
-    "/start": start_cmd,
-    "/help": help_cmd,
-    "/settings": settings_cmd,
-    "/taulell": board_poll_cmd,
-    "/mierdaoferta": shitty_offer_poll_cmd,
+    "start": start_cmd,
+    "help": help_cmd,
+    "settings": settings_cmd,
+    "taulell": board_poll_cmd,
+    "mierdaoferta": shitty_offer_poll_cmd,
 }
+
+
+def strip_command_string(text):
+    return_str = text
+    if return_str.startswith("/"):
+        return_str = return_str[1:]
+    if return_str.endswith(f"@{BOT_NAME}"):
+        return_str = return_str[:-len(f"@{BOT_NAME}")]
+    return return_str
 
 
 def dispatch(update):
@@ -63,9 +73,10 @@ def dispatch(update):
 
     # Can there be more than 1 bot command on a single message?
     for entity, cmd_text in bot_commands.items():
-        if cmd_text in command_handlers:
-            response = command_handlers[cmd_text](update)
+        stripped_cmd = strip_command_string(cmd_text)
+        if stripped_cmd in command_handlers:
+            response = command_handlers[stripped_cmd](update)
         else:
-            abort(400, f"Invalid command: {cmd_text}")
+            abort(400, f"Invalid command: {cmd_text} (stripped: {stripped_cmd})")
 
     return response
