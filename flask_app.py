@@ -1,72 +1,39 @@
 import logging
+import os
 
 from flask import abort, Flask, request
+import telegram
 
-from commands import command_handler
+from dispatcher import dispatch
 
-app = Flask(__name__)
-
+SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 
 
+def get_token():
+    with open(os.path.join(SCRIPT_DIR, "auth_token"), "r") as fd:
+        return fd.read().strip()
+
+
+def authorize():
+    try:
+        return telegram.Bot(token=get_token())
+    except telegram.error.InvalidToken:
+        abort(401, "Invalid Telegram token")
+
+
+app = Flask(__name__)
+bot = authorize()
+
+
 @app.route("/", methods=["POST"])
 def root_url():
-    """
-    Sample request data:
-
-    {
-        "update_id": 123456789,
-        "message": {
-            "message_id": 16,
-            "from": {
-                "id": 456789,
-                "is_bot": false,
-                "first_name": "John",
-                "last_name": "Appleseed",
-                "username": "johnapleseed",
-                "language_code": "en"
-            },
-            "chat": {
-                "id": 456789,
-                "first_name": "John",
-                "last_name": "Appleseed",
-                "username": "johnapleseed",
-                "type": "private"
-            },
-            "date": 1613296854,
-            "text": "/start",
-            "entities": [{"offset": 0, "length": 6, "type": "bot_command"}]
-        }
-    }
-
-    """
-
-    app.logger.info("POST /")
-    app.logger.info("request.args")
-    app.logger.info(request.args)
-    app.logger.info("request.form")
-    app.logger.info(request.form)
-    app.logger.info("request.values")
-    app.logger.info(request.values)
-    app.logger.info("request.json")
     app.logger.info(request.json)
-    app.logger.info("request.data")
-    app.logger.info(request.data)
-
     if not request.json:
         abort(400)
 
-    if get_message_type(request.json) == "bot_command":
-        return command_handler(request.json)
-    else:
-        abort(400)
-
-
-def get_message_type(data):
-    try:
-        return data["message"]["entities"][0]["type"]
-    except KeyError:
-        abort(400)
+    update = telegram.Update.de_json(request.json, bot)
+    return dispatch(update)
