@@ -28,7 +28,7 @@ Start local development server:
 FLASK_APP=flask_app.py FLASK_ENV=development flask run
 ```
 
-## Useful info
+## Useful links
 
 ### Telegram API
 https://core.telegram.org/bots

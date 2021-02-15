@@ -10,7 +10,7 @@ from command_handlers import (
     board_poll_cmd,
     shitty_offer_poll_cmd,
 )
-from responses import error
+from responses import success, error
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 BOT_NAME = "FuckingMonopolyBot"
@@ -65,12 +65,12 @@ def dispatch(update, bot):
 
     """
     if not update.message:
-        return "Unsupported update type. Doing nothing."
+        return success("Unsupported update type. Doing nothing.")
 
     bot_commands = update.message.parse_entities(telegram.MessageEntity.BOT_COMMAND)
 
     if not bot_commands:
-        return "Not a bot command. Doing nothing."
+        return success("Not a bot command. Doing nothing.")
 
     # Can there be more than 1 bot command on a single message?
     for entity, cmd_text in bot_commands.items():
