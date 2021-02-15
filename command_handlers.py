@@ -48,16 +48,13 @@ def board_poll_cmd(update: telegram.Update, bot):
 def get_shitty_offer_options():
     borderline_options = ["Borderline", "Meeeh...", "Més o menys", "D'aquella manera"]
     insulting_options = [
-        "Por supuesto",
         "Pixada a la cara",
         "Insult",
-        "Cómeme los huevos",
-        "A fregar!",
-        "Venga hombre!",
-        "A tu puta casa!",
+        "Cómeme los huevos en copa",
         "Puto rastrero",
         "Rata de claveguera",
         "Luisal-level",
+        "No tens honor",
     ]
     return ["No", random.choice(borderline_options), "Sí"] + random.sample(
         insulting_options, 2
