@@ -1,9 +1,12 @@
 import logging
+import os
+
+from flask import abort, Flask, request
 import telegram
-from flask import Flask, jsonify, request
 
-app = Flask(__name__)
+from dispatcher import dispatch
 
+SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -11,33 +14,26 @@ logging.basicConfig(
 
 
 def get_token():
-    with open("auth_token", "r") as fd:
-        return fd.read()
+    with open(os.path.join(SCRIPT_DIR, "auth_token"), "r") as fd:
+        return fd.read().strip()
 
 
-@app.route("/", methods=["POST", "GET"])
-def hello_world():
-    bot = telegram.Bot(token=get_token())
-    if request.method == "GET":
-        logging.log(logging.INFO, "GET /")
-        logging.log(logging.INFO, request)
-        return "GET /"
-    else:
-        logging.log(logging.INFO, "POST /")
-        logging.log(logging.INFO, request)
-        return "POST /"
+def authorize():
+    try:
+        return telegram.Bot(token=get_token())
+    except telegram.error.InvalidToken:
+        abort(401, "Invalid Telegram token")
 
 
-@app.route("/start")
-def start_cmd():
-    return "Start"
+app = Flask(__name__)
+bot = authorize()
 
 
-@app.route("/help")
-def help_cmd():
-    return "Help"
+@app.route("/", methods=["POST"])
+def root_url():
+    app.logger.info(request.json)
+    if not request.json:
+        abort(400)
 
-
-@app.route("/settings")
-def settings_cmd():
-    return "Settings"
+    update = telegram.Update.de_json(request.json, bot)
+    return dispatch(update)
