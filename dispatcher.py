@@ -29,11 +29,11 @@ def strip_command_string(text):
     if return_str.startswith("/"):
         return_str = return_str[1:]
     if return_str.endswith(f"@{BOT_NAME}"):
-        return_str = return_str[:-len(f"@{BOT_NAME}")]
+        return_str = return_str[: -len(f"@{BOT_NAME}")]
     return return_str
 
 
-def dispatch(update):
+def dispatch(update, bot):
     """
     Sample request data:
 
@@ -75,7 +75,7 @@ def dispatch(update):
     for entity, cmd_text in bot_commands.items():
         stripped_cmd = strip_command_string(cmd_text)
         if stripped_cmd in command_handlers:
-            response = command_handlers[stripped_cmd](update)
+            response = command_handlers[stripped_cmd](update, bot)
         else:
             abort(400, f"Invalid command: {cmd_text} (stripped: {stripped_cmd})")
 

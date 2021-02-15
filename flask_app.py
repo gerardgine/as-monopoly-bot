@@ -36,4 +36,4 @@ def root_url():
         abort(400)
 
     update = telegram.Update.de_json(request.json, bot)
-    return dispatch(update)
+    return dispatch(update, bot)
