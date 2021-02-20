@@ -38,6 +38,7 @@ def board_poll_cmd(update: telegram.Update, bot):
             "Paris, La Belle Epoque",
             "1935 Atlantic City",
             "Snowdrop Valley",
+            "Victorian London",
         ],
         is_anonymous=False,
     )
