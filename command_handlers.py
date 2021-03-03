@@ -55,6 +55,7 @@ def get_shitty_offer_options():
         "Rata de claveguera",
         "Luisal-level",
         "No tens honor",
+        "Et pots fotre l'oferta pel cul",
     ]
     return ["No", random.choice(borderline_options), "Sí"] + random.sample(
         insulting_options, 2
