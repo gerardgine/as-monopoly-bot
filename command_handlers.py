@@ -39,6 +39,7 @@ def board_poll_cmd(update: telegram.Update, bot):
             "1935 Atlantic City",
             "Snowdrop Valley",
             "Victorian London",
+            "Cherry Blossom Tokyo",
         ],
         is_anonymous=False,
     )
@@ -68,6 +69,58 @@ def shitty_offer_poll_cmd(update: telegram.Update, bot):
         get_chat_id_from_update(update),
         question="Mierdaoferta?",
         options=get_shitty_offer_options(),
+        is_anonymous=False,
+    )
+    return success(text)
+
+
+def city_poll_cmd(update: telegram.Update, bot):
+    text = "City poll"
+    bot.send_poll(
+        get_chat_id_from_update(update),
+        question="Quina ciutat voleu fer servir amb el taulell clàssic?",
+        options=[
+            "Àustria - Austria",
+            "Bòsnia - Bosnia",
+            "Brasil - Brazil",
+            "Canadà (FR) - Canada (FR)",
+            "Croàcia - Croatia",
+            "República Txeca - Czechia",
+            "Dinamarca - Denmark",
+            "Estònia - Estonia",
+            "Finlàndia - Finland",
+            "França - France",
+            "Alemanya - Germany",
+            "Hong Kong - Hong Kong",
+            "Hongria - Hungary",
+            "Índia - India",
+            "Indonèsia - Indonesia",
+            "Irlanda - Ireland",
+            "Itàlia - Italy",
+            "Amèrica Llatina - Latin America",
+            "Letònia - Latvia",
+            "Lituània - Lithuania",
+            "Malàisia - Malaysia",
+            "Mèxic - Mexico",
+            "Països Baixos - Netherlands",
+            "Noruega - Norway",
+            "Polònia - Poland",
+            "Portugal - Portugal",
+            "Romania - Romania",
+            "Rússia - Russia",
+            "Sèrbia - Serbia",
+            "Eslovàquia - Slovakia",
+            "Eslovènia - Slovenia",
+            "Sud-Àfrica - South Africa",
+            "Espanya - Spain",
+            "Espanya (català) - Spain (Catalan)",
+            "Suècia - Sweden",
+            "Suïssa (FR) - Switzerland (FR)",
+            "Suïssa (DE) - Switzerland (DE)",
+            "Turquia - Turkey",
+            "Regne Unit - UK",
+            "EUA - USA",
+        ],
         is_anonymous=False,
     )
     return success(text)
