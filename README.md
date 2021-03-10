@@ -1,4 +1,5 @@
 # Fucking Monopoly Bot
+
 Simple Telegram bot for Monopoly games
 
 ## Local set up
@@ -26,6 +27,16 @@ pip install -r requirements.txt
 Start local development server:
 ```shell
 FLASK_APP=flask_app.py FLASK_ENV=development flask run
+```
+
+## Update commands list in Telegram
+
+In the chat with `@BotFather`, run `/setcommands`, select `@FuckingMonopolyBot`, and
+send a single message with all the commands and their descriptions like this:
+```
+taulell - Crear enquesta per triar taulell
+ciutat - Crear enquesta per triar la ciutat del taulell clàssic
+mierdaoferta - Crear enquesta per certificar si (presumiblement el Luisal) ha fet una mierdaoferta
 ```
 
 ## Useful links
