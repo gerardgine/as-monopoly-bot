@@ -221,7 +221,7 @@ def city_poll_cmd(update: telegram.Update, bot: telegram.Bot):
         bot=bot,
         poll_options=CITIES,
         question="Quina ciutat voleu fer servir amb el taulell clàssic?",
-        open_period=60,
+        open_period=120,
         allows_multiple_answers=True,
     )
     return success(text)
@@ -240,7 +240,7 @@ def grouped_cities_poll_cmd(update: telegram.Update, bot: telegram.Bot):
             bot=bot,
             poll_options=cities,
             question=f"Quina ciutat voleu fer servir amb el taulell clàssic? - {continent}",
-            open_period=60,
+            open_period=120,
             allows_multiple_answers=True,
         )
     return success(text)
