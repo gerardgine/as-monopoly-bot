@@ -8,7 +8,7 @@ from command_handlers import (
     settings_cmd,
     board_poll_cmd,
     shitty_offer_poll_cmd,
-    city_poll_cmd,
+    grouped_cities_poll_cmd,
 )
 from responses import success, error
 
@@ -22,7 +22,7 @@ commands_to_command_handlers = {
     "settings": settings_cmd,
     "taulell": board_poll_cmd,
     "mierdaoferta": shitty_offer_poll_cmd,
-    "ciutat": city_poll_cmd,
+    "ciutat": grouped_cities_poll_cmd,
 }
 
 
