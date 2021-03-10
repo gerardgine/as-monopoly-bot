@@ -1,6 +1,5 @@
 import os
 
-from flask import abort
 import telegram
 
 from command_handlers import (
@@ -17,7 +16,7 @@ SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
 BOT_NAME = "FuckingMonopolyBot"
 
 
-command_handlers = {
+commands_to_command_handlers = {
     "start": start_cmd,
     "help": help_cmd,
     "settings": settings_cmd,
@@ -27,7 +26,7 @@ command_handlers = {
 }
 
 
-def strip_command_string(text):
+def strip_command_string(text: str):
     return_str = text
     if return_str.startswith("/"):
         return_str = return_str[1:]
@@ -36,7 +35,7 @@ def strip_command_string(text):
     return return_str
 
 
-def dispatch(update, bot):
+def dispatch(update: telegram.Update, bot: telegram.Bot):
     """
     Sample request data:
 
@@ -77,8 +76,8 @@ def dispatch(update, bot):
     # Can there be more than 1 bot command on a single message?
     for entity, cmd_text in bot_commands.items():
         stripped_cmd = strip_command_string(cmd_text)
-        if stripped_cmd in command_handlers:
-            response = command_handlers[stripped_cmd](update, bot)
+        if stripped_cmd in commands_to_command_handlers:
+            response = commands_to_command_handlers[stripped_cmd](update, bot)
         else:
             return error(400, f"Invalid command: {cmd_text} (stripped: {stripped_cmd})")
 

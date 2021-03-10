@@ -12,25 +12,32 @@ def get_chat_id_from_update(update: telegram.Update):
     return update.message.chat_id
 
 
-def start_cmd(update: telegram.Update, bot):
+def start_cmd(update: telegram.Update, bot: telegram.Bot):
     text = "Hola, sóc el Fucking Monopoly Bot"
     bot.send_message(get_chat_id_from_update(update), text)
     return success(text)
 
 
-def help_cmd(update: telegram.Update, bot):
+def help_cmd(update: telegram.Update, bot: telegram.Bot):
     text = "Comandes suportades:\n\n/taulell\n/mierdaoferta"
     bot.send_message(get_chat_id_from_update(update), text)
     return success(text)
 
 
-def settings_cmd(update: telegram.Update, bot):
+def settings_cmd(update: telegram.Update, bot: telegram.Bot):
     text = "These are not the droids you're looking for"
     bot.send_message(get_chat_id_from_update(update), text)
     return success(text)
 
 
-def send_poll_with_split_options(update: telegram.Update, bot, poll_options, question):
+def send_poll_with_split_options(
+    update: telegram.Update,
+    bot: telegram.Bot,
+    poll_options: list,
+    question: str,
+    open_period: int = None,
+    allows_multiple_answers: bool = False,
+):
     """
     Having to do this sucks, big time, but Telegram limits the amount of options per
     poll to 10 (as of March 10th, 2021), so if our poll has too many options, we'll
@@ -56,11 +63,13 @@ def send_poll_with_split_options(update: telegram.Update, bot, poll_options, que
             question=updated_question,
             options=poll_options[i : min(options_count, i + options_per_poll)],
             is_anonymous=False,
+            open_period=open_period,
+            allows_multiple_answers=allows_multiple_answers,
         )
         current_batch += 1
 
 
-def board_poll_cmd(update: telegram.Update, bot):
+def board_poll_cmd(update: telegram.Update, bot: telegram.Bot):
     text = "Board poll"
     boards = [
         "Clàssic",
@@ -71,7 +80,13 @@ def board_poll_cmd(update: telegram.Update, bot):
         "Victorian London",
         "Cherry Blossom Tokyo",
     ]
-    send_poll_with_split_options(update, bot, boards, "Quin taulell voleu fer servir?")
+    send_poll_with_split_options(
+        update=update,
+        bot=bot,
+        poll_options=boards,
+        question="Quin taulell voleu fer servir?",
+        open_period=60,
+    )
     return success(text)
 
 
@@ -92,15 +107,19 @@ def get_shitty_offer_options():
     )
 
 
-def shitty_offer_poll_cmd(update: telegram.Update, bot):
+def shitty_offer_poll_cmd(update: telegram.Update, bot: telegram.Bot):
     text = "Mierdaoferta poll"
     send_poll_with_split_options(
-        update, bot, get_shitty_offer_options(), "Mierdaoferta?"
+        update=update,
+        bot=bot,
+        poll_options=get_shitty_offer_options(),
+        question="Mierdaoferta?",
+        open_period=180,
     )
     return success(text)
 
 
-def city_poll_cmd(update: telegram.Update, bot):
+def city_poll_cmd(update: telegram.Update, bot: telegram.Bot):
     text = "City poll"
     cities = [
         "Àustria - Austria",
@@ -145,6 +164,11 @@ def city_poll_cmd(update: telegram.Update, bot):
         "EUA - USA",
     ]
     send_poll_with_split_options(
-        update, bot, cities, "Quina ciutat voleu fer servir amb el taulell clàssic?"
+        update=update,
+        bot=bot,
+        poll_options=cities,
+        question="Quina ciutat voleu fer servir amb el taulell clàssic?",
+        open_period=60,
+        allows_multiple_answers=True,
     )
     return success(text)
