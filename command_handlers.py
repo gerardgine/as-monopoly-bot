@@ -213,7 +213,7 @@ def city_poll_cmd(update: telegram.Update, bot: telegram.Bot):
     """
     city_poll_cmd(...) and  grouped_cities_poll_cmd(...) are handlers for the same
     command. The difference is that the former just sends one big poll (split as
-    needed), while the latter groups the cities (and the splits as needed).
+    needed), while the latter groups the cities (and then splits as needed).
     """
     text = "City poll"
     send_poll_with_split_options(
@@ -231,7 +231,7 @@ def grouped_cities_poll_cmd(update: telegram.Update, bot: telegram.Bot):
     """
     city_poll_cmd(...) and  grouped_cities_poll_cmd(...) are handlers for the same
     command. The difference is that the former just sends one big poll (split as
-    needed), while the latter groups the cities (and the splits as needed).
+    needed), while the latter groups the cities (and then splits as needed).
     """
     text = "City poll"
     for continent, cities in GROUPED_CITIES.items():
