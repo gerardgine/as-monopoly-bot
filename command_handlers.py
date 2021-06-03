@@ -169,6 +169,7 @@ def board_poll_cmd(update: telegram.Update, bot: telegram.Bot):
         "Snowdrop Valley",
         "Victorian London",
         "Cherry Blossom Tokyo",
+        "New York 2121",
     ]
     send_poll_with_split_options(
         update=update,
