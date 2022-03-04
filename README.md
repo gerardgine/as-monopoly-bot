@@ -1,6 +1,6 @@
-# Fucking Monopoly Bot
+# Almorrana Sozial Monopoly Bot
 
-Simple Telegram bot for Monopoly games
+Simple Telegram bot for Monopoly games with Almorrana Sozial
 
 ## Local set up
 

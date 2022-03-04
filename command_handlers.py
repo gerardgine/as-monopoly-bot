@@ -103,7 +103,7 @@ def get_chat_id_from_update(update: telegram.Update):
 
 
 def start_cmd(update: telegram.Update, bot: telegram.Bot):
-    text = "Hola, sóc el Fucking Monopoly Bot"
+    text = "Hola, sóc l'A.S. Monopoly Bot"
     bot.send_message(get_chat_id_from_update(update), text)
     return success(text)
 
